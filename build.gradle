@@ -26,6 +26,7 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api")
     implementation("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation "org.assertj:assertj-core:3.17.2"
 }
 
 
