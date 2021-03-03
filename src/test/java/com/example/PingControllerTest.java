@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @MicronautTest
 
@@ -45,18 +46,19 @@ class PingControllerTest implements TestPropertyProvider {
     public static class PingController {
 
         @Post("/ping")
-        public PingResponse ping(String sender) {
+        public Single<PingResponse> ping(String sender) {
             log.info("Ping received from {}", sender);
 //            PingResponse pingResponse = new PingResponse();
 //            pingResponse.setResponse("pong");
 //            return pingResponse;
-            throw new HttpStatusException(HttpStatus.UNAUTHORIZED, "testing");
+            return Single.<PingResponse>error(
+             new HttpStatusException(HttpStatus.UNAUTHORIZED, "testing")).delay(2, TimeUnit.SECONDS);
         }
     }
 
     @Test
     void testPing() throws Exception {
-        for (var i = 0; i < 10; i += 1) {
+        for (var i = 0; i < 100; i += 1) {
             final int ii = i;
             int count = 10;
             List<PingResponse> pingResponse = Flowable.range(1, count)
@@ -67,8 +69,8 @@ class PingControllerTest implements TestPropertyProvider {
 
 
             Thread.sleep(10000);
-            stopServer();
-            startServer();
+//            stopServer();
+//            startServer();
 
             log.info("//////////////////////" + i);
         }
