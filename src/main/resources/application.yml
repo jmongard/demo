@@ -5,3 +5,5 @@ micronaut:
     http:
       cookie: true
       header: true
+
+demo.foo: It does not matter if the property value is defined here or not.
